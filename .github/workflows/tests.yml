@@ -18,8 +18,8 @@ jobs:
 
       - name: Restore dependencies
         run: |
-          dotnet restore dotnet-app/ProjectFile.csproj
-          dotnet restore dotnet-app.Tests/ProjectFile-Tests.csproj
+          dotnet restore TP3-DevOps/dotnet-app/ProjectFile.csproj
+          dotnet restore TP3-DevOps/dotnet-app.Tests/ProjectFile-Tests.csproj
 
       - name: Run .NET tests
-        run: dotnet test dotnet-app.Tests/ProjectFile-Tests.csproj
+        run: dotnet test TP3-DevOps/dotnet-app.Tests/ProjectFile-Tests.csproj
