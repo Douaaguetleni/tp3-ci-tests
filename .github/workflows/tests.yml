@@ -22,47 +22,6 @@ jobs:
           dotnet restore TP3-DevOps/dotnet-app.Tests/ProjectFile-Tests.csproj
 
       - name: Run .NET tests
-        run: dotnet test TP3-DevOps/dotnet-app.Tests/ProjectFile-Tests.csproj
-
-  test-python:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Run Python Tests
-        run: |
-          cd TP3-DevOps/python-app 
-          python -m unittest
-      name: Run Tests
-
-on:
-  push:
-    branches: [ main ]
-
-jobs:
-  test-dotnet:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.0.x'
-
-      - name: Restore dependencies
-        run: |
-          dotnet restore TP3-DevOps/dotnet-app/ProjectFile.csproj
-          dotnet restore TP3-DevOps/dotnet-app.Tests/ProjectFile-Tests.csproj
-
-      - name: Run .NET tests
         run: |
           dotnet test TP3-DevOps/dotnet-app.Tests/ProjectFile-Tests.csproj \
             --logger "console;verbosity=detailed" \
