@@ -37,5 +37,66 @@ jobs:
 
       - name: Run Python Tests
         run: |
-          cd TP3-DevOps/python-app
+          cd TP3-DevOps/python-app 
           python -m unittest
+      name: Run Tests
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  test-dotnet:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore dependencies
+        run: |
+          dotnet restore TP3-DevOps/dotnet-app/ProjectFile.csproj
+          dotnet restore TP3-DevOps/dotnet-app.Tests/ProjectFile-Tests.csproj
+
+      - name: Run .NET tests
+        run: |
+          dotnet test TP3-DevOps/dotnet-app.Tests/ProjectFile-Tests.csproj \
+            --logger "console;verbosity=detailed" \
+            --logger "trx;LogFileName=TestResults.trx"
+
+      - name: Upload .NET test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: dotnet-test-results
+          path: '**/TestResults.trx'
+
+  test-python:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install XML test reporter
+        run: |
+          python -m pip install --upgrade pip
+          pip install unittest-xml-reporting
+
+      - name: Run Python tests
+        run: |
+          cd TP3-DevOps/python-app
+          python -m xmlrunner discover -v -o test-results
+
+      - name: Upload Python test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-test-results
+          path: TP3-DevOps/python-app/test-results/
